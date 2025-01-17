@@ -5,10 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	// "github.com/CarCleaningApp/backend/internal/models"
-	// "github.com/CarCleaningApp/backend/pkg/logger"
-	"github.com/CarCleaningApp/backend/internal/models"
-	"github.com/CarCleaningApp/backend/pkg/logger"
+	models "github.com/themrgeek/CarCleaningApp/backend/internal/models"
+	logger "github.com/themrgeek/CarCleaningApp/backend/pkg/logger"
 )
 
 func LoginHandler(db *sql.DB) http.HandlerFunc {

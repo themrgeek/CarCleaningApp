@@ -18,18 +18,39 @@ type Config struct {
 }
 
 func LoadConfig() Config {
+
+	appPort, exists := os.LookupEnv("APP_PORT")
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
+	if !exists {
+
+		log.Fatal("APP_PORT environment variable not set")
+
+	}
+
+	logFile, exists := os.LookupEnv("LOG_FILE")
+
+	if !exists {
+
+		log.Fatal("LOG_FILE environment variable not set")
+
+	}
+
 	return Config{
+
+		AppPort: appPort,
+
+		LogFile:    logFile,
 		DBUser:     os.Getenv("DB_USER"),
 		DBPassword: os.Getenv("DB_PASSWORD"),
 		DBHost:     os.Getenv("DB_HOST"),
 		DBPort:     os.Getenv("DB_PORT"),
 		DBName:     os.Getenv("DB_NAME"),
-		AppPort:    os.Getenv("APP_PORT"),
-		LogFile:    os.Getenv("LOG_FILE"),
+		// Initialize other fields as needed
+
 	}
+
 }

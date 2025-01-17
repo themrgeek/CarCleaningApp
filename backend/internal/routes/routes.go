@@ -1,19 +1,17 @@
 package routes
 
 import (
+	"database/sql"
 	"log"
 
-	"github.com/themrgeek/CarCleaningApp/backend/handlers"
-
 	"github.com/gorilla/mux"
+	"github.com/themrgeek/CarCleaningApp/backend/internal/handlers"
 )
 
-// SetupRoutes sets up all routes for the application
-func SetupRoutes() *mux.Router {
+func SetupRoutes(db *sql.DB) *mux.Router {
 	router := mux.NewRouter()
 
-	// Route for login
-	router.HandleFunc("/login", handlers.LoginHandler).Methods("POST")
+	router.HandleFunc("/login", handlers.LoginHandler(db)).Methods("POST")
 
 	// Admin-specific route
 	router.HandleFunc("/admin/dashboard", handlers.AdminDashboard).Methods("GET")

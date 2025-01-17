@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/themrgeek/CarCleaningApp/backend/config"
+	"github.com/themrgeek/CarCleaningApp/backend/internal/routes"
 	"github.com/themrgeek/CarCleaningApp/backend/pkg/db"
 	"github.com/themrgeek/CarCleaningApp/backend/pkg/logger"
-	"github.com/themrgeek/CarCleaningApp/backend/routes"
 )
 
 func main() {

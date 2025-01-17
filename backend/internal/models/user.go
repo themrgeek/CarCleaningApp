@@ -3,8 +3,7 @@ package models
 import (
 	"database/sql"
 	"errors"
-
-	"github.com/themrgeek/CarCleaningApp/backend/pkg/logger"
+	"log"
 )
 
 type User struct {
@@ -19,13 +18,13 @@ func Authenticate(db *sql.DB, email, password string) (string, error) {
 	err := db.QueryRow(query, email, password).Scan(&role)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			logger.Logger.Printf("Failed login attempt for email: %s", email)
+			log.Printf("Failed login attempt for email: %s", email)
 			return "", errors.New("invalid credentials")
 		}
-		logger.Logger.Printf("Error querying database for email %s: %v", email, err)
+		log.Printf("Error querying database for email %s: %v", email, err)
 		return "", err
 	}
 
-	logger.Logger.Printf("Successful login for email: %s, role: %s", email, role)
+	log.Printf("Successful login for email: %s, role: %s", email, role)
 	return role, nil
 }

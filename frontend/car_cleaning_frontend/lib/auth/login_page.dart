@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'signup_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,16 +20,13 @@ class _LoginPageState extends State<LoginPage> {
     final password = _passwordController.text;
 
     // Call your GoLang backend API here using HTTP POST
-    // Example: Use 'http' package for API calls
-    /*
     final response = await http.post(
-      Uri.parse('http://your-backend-url/login'),
+      Uri.parse('http://localhost:8080/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
-    */
-    // Mock response handling
-    if (email == "test@example.com" && password == "password") {
+
+    if (response.statusCode == 200) {
       // Navigate to dashboard
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login Successful!')),

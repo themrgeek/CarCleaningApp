@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -8,31 +10,43 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // Function to handle sign up
   Future<void> _signUp() async {
+    final name = _nameController.text;
     final email = _emailController.text;
     final password = _passwordController.text;
 
-    // Call your GoLang backend API here using HTTP POST
-    /*
+    final url =
+        Uri.parse('http://localhost:8080/signup').replace(queryParameters: {
+      'name': name,
+      'email': email,
+      'password': password,
+    });
+
     final response = await http.post(
-      Uri.parse('http://your-backend-url/signup'),
+      url,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'email': email, 'password': password}),
     );
-    */
-    // Mock response handling
-    if (email.isNotEmpty && password.isNotEmpty) {
+
+    if (response.statusCode == 201) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Sign-up Successful!')),
       );
       Navigator.pop(context);
+    } else if (response.statusCode == 500) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('User already exists. Redirecting to login...')),
+      );
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields!')),
+        const SnackBar(content: Text('Sign-up Failed! Please try again.')),
       );
     }
   }
@@ -53,6 +67,14 @@ class _SignUpPageState extends State<SignUpPage> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(
+                labelText: 'Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 10),
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(

@@ -42,7 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
             content: Text('User already exists. Redirecting to login...')),
       );
       if (mounted) {
-        Navigator.pushReplacementNamed(context, '/login');
+        Navigator.pushReplacementNamed(context, '/login_page.dart');
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

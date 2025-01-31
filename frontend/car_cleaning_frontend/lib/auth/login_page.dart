@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'signup_page.dart';
+import '../content/home_page.dart'; // Adjust the path as necessary
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -15,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   // Function to handle login
-  Future<void> _login() async {
+  Future<void> _login(Function onSuccess, Function onError) async {
     final email = _emailController.text;
     final password = _passwordController.text;
 
@@ -27,15 +28,30 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (response.statusCode == 200) {
-      // Navigate to dashboard
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login Successful!')),
-      );
+      onSuccess();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Invalid email or password!')),
-      );
+      onError();
     }
+  }
+
+  void _handleLogin() {
+    _login(
+      () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Login Successful!')),
+        );
+        // Navigate to Home Page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      },
+      () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid email or password!')),
+        );
+      },
+    );
   }
 
   @override
@@ -49,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
-              'Welcome to Car Cleaning App',
+              'Welcome to Aaron Cleaning Services',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
@@ -72,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _login,
+              onPressed: _handleLogin,
               child: const Text('Login'),
             ),
             const SizedBox(height: 10),

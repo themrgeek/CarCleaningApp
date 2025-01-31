@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -32,22 +31,26 @@ class _SignUpPageState extends State<SignUpPage> {
     );
 
     if (response.statusCode == 201) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sign-up Successful!')),
-      );
-      Navigator.pop(context);
-    } else if (response.statusCode == 500) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('User already exists. Redirecting to login...')),
-      );
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Sign-up Successful!')),
+        );
+        Navigator.pop(context);
+      }
+    } else if (response.statusCode == 500) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('User already exists. Redirecting to login...')),
+        );
         Navigator.pushReplacementNamed(context, '/login_page.dart');
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sign-up Failed! Please try again.')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Sign-up Failed! Please try again.')),
+        );
+      }
     }
   }
 
